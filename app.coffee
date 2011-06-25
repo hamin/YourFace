@@ -2,7 +2,7 @@ http = require 'http'
 fs = require 'fs'
 faye = require 'faye'
 opentok = require 'opentok'
-yaml = require('yaml')
+yaml = require 'yaml'
 
 # ********* Utility Stuff ***********
 process.on 'uncaughtException', (err) ->
@@ -45,8 +45,8 @@ registerPlayer = {
     return callback message  
 }
 
-bayeux.addExtension serverLog
+# bayeux.addExtension serverLog
 bayeux.addExtension registerPlayer
 bayeux.attach server
-console.log "Starting Faye server on port 300"
+console.log "Starting Faye server on port 3000"
 server.listen 3000  
