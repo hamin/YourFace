@@ -42,7 +42,7 @@ registerPlayer = {
   incoming: (message, callback) ->
     if message.subscription == '/yourface'
       userToken = ot.generateToken({sessionId:globalSession.sessionId})
-      bayeux.getClient().publish '/yourface', {sessionId: globalSession, apiKey: openTokConfig.apiKey, token: userToken }
+      bayeux.getClient().publish '/yourface', {sessionId: globalSession.sessionId, apiKey: openTokConfig.apiKey, token: userToken }
     return callback message
 }
 
