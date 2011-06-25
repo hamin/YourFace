@@ -1,5 +1,14 @@
 http = require 'http'
+fs = require 'fs'
 faye = require 'faye'
+opentok = require 'opentok'
+yaml = require('yaml')
+
+
+# Create instance of OpenTok SDK from YAML config
+openTokConfig = yaml.eval(fs.readFileSync('opentok.yml').toString('utf-8'))
+console.log openTokConfig.apiSecret
+ot = new opentok.OpenTokSDK openTokConfig.apiKey, openTokConfig.apiSecret
 
 bayeux = new faye.NodeAdapter( mount: '/faye', timeout: 45)
 
