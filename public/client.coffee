@@ -27,7 +27,7 @@ setupSession = (session) ->
 	
 
 connectOpenTok = () ->
-	console.log  "connectOpenTok"
+	console.log  "connectOpenTok sessionId=#{sessionId}"
 	session = TB.initSession(sessionId)
 	TB.setLogLevel(4)
 	setupSession session
