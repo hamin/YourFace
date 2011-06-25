@@ -18,6 +18,7 @@
     return _results;
   };
   setupSession = function(session) {
+    console.log("setupSession " + session);
     addHandler(session, "sessionConnected", function(event) {
       console.log("sessionConnected");
       subsribeToStreams(event.streams);
@@ -29,14 +30,16 @@
     });
   };
   connectOpenTok = function() {
+    console.log("connectOpenTok");
     session = TB.initSession(sessionId);
-    session.connect(apiKey, token);
-    return setupSession(session);
+    setupSession(session);
+    return session.connect(apiKey, token);
   };
   client.subscribe("/yourface", function(message) {
-    console.log("faye message -> " + message);
+    console.log("faye message -> " + (JSON.stringify(message)));
     sessionId = message.sessionId;
     apiKey = message.apiKey;
-    return token = message.token;
+    token = message.token;
+    return connectOpenTok();
   });
 }).call(this);

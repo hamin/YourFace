@@ -14,6 +14,7 @@ subscribeToStreams = (streams) ->
 		
 
 setupSession = (session) ->
+	console.log "setupSession #{session}"
 	addHandler session, "sessionConnected", (event) -> 
 		console.log "sessionConnected"
 		subsribeToStreams event.streams
@@ -25,13 +26,17 @@ setupSession = (session) ->
 	
 
 connectOpenTok = () ->
+	console.log  "connectOpenTok"
 	session = TB.initSession(sessionId)
+	setupSession session
+	
 	session.connect(apiKey,token)
 	
-	setupSession session
+	
 
 client.subscribe "/yourface", (message) ->
-	console.log "faye message -> #{message}"
+	console.log "faye message -> #{JSON.stringify message}"
 	sessionId = message.sessionId
 	apiKey = message.apiKey
 	token = message.token
+	connectOpenTok()
