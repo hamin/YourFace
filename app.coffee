@@ -40,9 +40,10 @@ bayeux = new faye.NodeAdapter( mount: '/faye', timeout: 45)
 
 registerPlayer = {
   incoming: (message, callback) ->
-    userToken = ot.generateToken({sessionId:globalSession.sessionId})
-    bayeux.getClient().publish '/yourface', {sessionId: globalSession, apiKey: openTokConfig.apiKey, token: userToken }
-    return callback message  
+    if message.subscription == '/yourface'
+      userToken = ot.generateToken({sessionId:globalSession.sessionId})
+      bayeux.getClient().publish '/yourface', {sessionId: globalSession, apiKey: openTokConfig.apiKey, token: userToken }
+    return callback message
 }
 
 # bayeux.addExtension serverLog
