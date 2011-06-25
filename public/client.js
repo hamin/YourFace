@@ -6,6 +6,7 @@
   token = null;
   session = null;
   addHandler = function(session, type, callback) {
+    console.log("addHandler");
     return session.addEventListener(type, callback);
   };
   subscribeToStreams = function(streams) {
@@ -32,7 +33,9 @@
   connectOpenTok = function() {
     console.log("connectOpenTok");
     session = TB.initSession(sessionId);
+    TB.setLogLevel(4);
     setupSession(session);
+    console.log("apiKey = " + apiKey + " token = " + token);
     return session.connect(apiKey, token);
   };
   client.subscribe("/yourface", function(message) {

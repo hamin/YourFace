@@ -6,6 +6,7 @@ token = null
 session = null
 
 addHandler = (session,type,callback) ->
+	console.log "addHandler"
 	session.addEventListener type, callback
 	
 subscribeToStreams = (streams) ->
@@ -28,8 +29,10 @@ setupSession = (session) ->
 connectOpenTok = () ->
 	console.log  "connectOpenTok"
 	session = TB.initSession(sessionId)
+	TB.setLogLevel(4)
 	setupSession session
 	
+	console.log "apiKey = #{apiKey} token = #{token}"
 	session.connect(apiKey,token)
 	
 	
