@@ -18,12 +18,12 @@ setupSession = (session) ->
 	console.log "setupSession #{session}"
 	addHandler session, "sessionConnected", (event) -> 
 		console.log "sessionConnected"
-		subsribeToStreams event.streams
+		subscribeToStreams event.streams
 		session.publish()
 		
 	addHandler session, "streamCreated", (event) -> 
 		console.log "streamCreated"
-		subsribeToStreams event.streams
+		subscribeToStreams event.streams
 	
 
 connectOpenTok = () ->

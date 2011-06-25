@@ -22,12 +22,12 @@
     console.log("setupSession " + session);
     addHandler(session, "sessionConnected", function(event) {
       console.log("sessionConnected");
-      subsribeToStreams(event.streams);
+      subscribeToStreams(event.streams);
       return session.publish();
     });
     return addHandler(session, "streamCreated", function(event) {
       console.log("streamCreated");
-      return subsribeToStreams(event.streams);
+      return subscribeToStreams(event.streams);
     });
   };
   connectOpenTok = function() {
