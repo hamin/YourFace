@@ -72,6 +72,9 @@
   };
   shoot = function(position, isOpp) {
     var bulletClass, bulletName, sign;
+    if (oppHits >= 9 || myHits >= 9) {
+      return;
+    }
     ++bulletNum;
     bullets.push(bulletNum);
     bulletName = "b" + bulletNum;
@@ -92,16 +95,26 @@
     return $("#" + bulletName).animate({
       top: position.y + sign * 915
     }, 400, function() {
-      var explosionClass, hitName, i, meTop, oppLeft, oppTop, oppWidth, top, _i, _ref, _results;
+      var explosionClass, hi, hitName, i, lo, meLeft, meTop, meWidth, oppLeft, oppTop, oppWidth, top, _i, _ref, _results;
       i = bullets.indexOf(bulletName);
       bullets.splice(i);
       oppTop = $('.opponent').offset().top;
       oppLeft = $('.opponent').offset().left;
       oppWidth = oppLeft + $('.opponent').width();
       meTop = $('.me').offset().top;
+      meLeft = $('.me').offset().left;
+      meWidth = meLeft + $('.me').width();
+      lo = oppLeft;
+      hi = oppWidth;
+      if (isOpp === true) {
+        lo = meLeft;
+      }
+      if (isOpp === true) {
+        hi = meWidth;
+      }
       if (_ref = $("#" + bulletName).offset().left, __indexOf.call((function() {
         _results = [];
-        for (var _i = oppLeft; oppLeft <= oppWidth ? _i <= oppWidth : _i >= oppWidth; oppLeft <= oppWidth ? _i++ : _i--){ _results.push(_i); }
+        for (var _i = lo; lo <= hi ? _i <= hi : _i >= hi; lo <= hi ? _i++ : _i--){ _results.push(_i); }
         return _results;
       }).apply(this, arguments), _ref) >= 0) {
         console.log("BOOM!!!!");
@@ -145,6 +158,11 @@
         }
         console.log($("#" + hitName).offset());
         if (oppHits === 9 || myHits === 9) {
+          client.publish('/fire', {
+            x: position.x,
+            y: position.y,
+            oppClientId: clientId
+          });
           alert("Game OVER!!!");
         }
       }

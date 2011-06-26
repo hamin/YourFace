@@ -52,6 +52,7 @@ updateDivPosition = (divName,newPosition) ->
 
 
 shoot = (position, isOpp) ->
+   return if oppHits is 9 or myHits is 9
    ++bulletNum
    bullets.push bulletNum
    bulletName = "b#{bulletNum}"
@@ -72,9 +73,16 @@ shoot = (position, isOpp) ->
      oppLeft = $('.opponent').offset().left
      oppWidth = oppLeft + $('.opponent').width()
      
-     meTop = $('.me').offset().top;
+     meTop = $('.me').offset().top
+     meLeft = $('.me').offset().left
+     meWidth = meLeft + $('.me').width()
      
-     if $("##{bulletName}").offset().left in [oppLeft..oppWidth]
+     lo = oppLeft
+     hi = oppWidth
+     lo = meLeft if isOpp == true
+     hi = meWidth if isOpp == true
+     
+     if $("##{bulletName}").offset().left in [lo..hi]
        console.log("BOOM!!!!")
        if isOpp == true then (oppScore += 1) else (myScore += 1)
        $('#myScore').html "<h3>#{myScore}</h3>"
@@ -91,7 +99,7 @@ shoot = (position, isOpp) ->
        
        if isOpp is false
          hitName = "oppHits#{oppHits}"
-         $(".opponent").append "<div id='#{hitName}' class='oppHit'></div>"
+         $(".opponent").append "<div id='#{hitName}' class='oppHit'></div>" 
          $("##{hitName}").offset left: (oppHits%3) * 30 + 6 + $(".opponent").offset().left , top: (Math.floor oppHits/3) * 30 + 20
          ++oppHits;
        else
@@ -102,8 +110,9 @@ shoot = (position, isOpp) ->
        
        console.log $("##{hitName}").offset()
        
-       alert "Game OVER!!!" if oppHits is 9 or myHits is 9
-       
+       if oppHits is 9 or myHits is 9
+         client.publish '/fire', x: position.x, y: position.y, oppClientId: clientId
+         alert "Game OVER!!!" 
      # If it leaves playing field remove the bullet
      if ( isOpp is true && $("##{bulletName}").offset().top > 800 ) or ( isOpp is false && $("##{bulletName}").offset().top < 8 )
        $("##{bulletName}").remove()
