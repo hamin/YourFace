@@ -61,12 +61,19 @@
   shoot = function(position) {
     console.log("shoot bitch shoot!");
     $("#playingField").append("<div class='bullet'></div>");
-    return $(".bullet").offset({
+    $(".bullet").offset({
       left: position.x,
       top: position.y
     });
+    return $(".bullet").animate({
+      top: position.y - 915
+    }, 400, function() {
+      if ($(".bullet").offset().top === 8) {
+        return $(".bullet").remove();
+      }
+    });
   };
-  client = new Faye.Client("http://localhost:3000/faye");
+  client = new Faye.Client("http://192.168.201.92:3000/faye");
   client.subscribe("/yourface", function(message) {
     if (clientId < 0) {
       sessionId = message.sessionId;
@@ -96,8 +103,7 @@
       if (event.keyCode === 39) {
         updateDivPosition("me", curLeftPos + offset);
       }
-      if (event.keyCode === 32) {
-        console.log("about to shoot");
+      if (event.keyCode === 16) {
         shoot({
           x: curLeftPos,
           y: curTopPos

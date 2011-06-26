@@ -48,6 +48,8 @@ shoot = (position) ->
 	console.log "shoot bitch shoot!"
 	$("#playingField").append "<div class='bullet'></div>"
 	$(".bullet").offset left: position.x, top: position.y
+	$(".bullet").animate {top: (position.y - 915) }, 400, () ->
+	  $(".bullet").remove() if $(".bullet").offset().top is 8
 
 client = new Faye.Client "http://192.168.201.92:3000/faye"	      
 #client = new Faye.Client "http://localhost:3000/faye"
@@ -82,8 +84,7 @@ $(document).ready () ->
 	  # right
 	  if event.keyCode is 39 	
       updateDivPosition "me", curLeftPos + offset
-    if event.keyCode is 32
-      console.log "about to shoot"
+    if event.keyCode is 16
       shoot x: curLeftPos, y: curTopPos
     
     client.publish "/opponentPos", {curLeftPos: $(".me").offset().left, oppClientId: clientId}
