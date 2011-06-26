@@ -112,7 +112,7 @@
         }
         $("#explosion").offset({
           left: oppLeft + 50,
-          top: oppTop + 50
+          top: top + 50
         });
         setTimeout("$(\"#explosion\").remove()", 250);
       }

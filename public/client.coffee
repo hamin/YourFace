@@ -77,7 +77,7 @@ shoot = (position, isOpp) ->
        $("#playingField").append "<div id='explosion' class='#{explosionClass}'></div>"  
        top = oppTop;
        top = meTop if isOpp is true
-       $("#explosion").offset left: oppLeft+50, top: oppTop+50
+       $("#explosion").offset left: oppLeft+50, top: top+50
        setTimeout "$(\"#explosion\").remove()", 250
        
      # If it leaves playing field remove the bullet
