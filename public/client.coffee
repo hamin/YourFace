@@ -45,20 +45,23 @@ $(document).ready () ->
 	$('body').keydown (event) ->
 	  curLeftPos = $(".me").offset().left
 	  curTopPos = $(".me").offset().left
-	  switch event.keyCode
-	    when 37
-	      # left
-	      $(".me").offset left: (curLeftPos - 10)
-	    when 39
-	      # right
-	      $(".me").offset left: (curLeftPos + 10)
-	    when 38
-	      # top
-	      $(".me").offset top: (curTopPos - 10)
-	    when 40
-	      # bottom
-	      $(".me").offset top: (curTopPos + 10)
-        
+	  
+	  offset = 50;
+	  #left
+	  if event.keyCode is 37
+	  		$(".me").offset left: Math.max 13, curLeftPos - offset
+	  # right
+	  if event.keyCode is 39 	
+      		$(".me").offset left: Math.min 600, curLeftPos + offset
+
+	    # when 38
+	    #   # top
+	    #   $(".me").offset top: (curTopPos - 10)
+	    # when 40
+	    #   # bottom
+	    #   $(".me").offset top: (curTopPos + 10)
+	    #   
+	      
 client = new Faye.Client "http://localhost:3000/faye"
 client.subscribe "/yourface", (message) ->
 	console.log "faye message -> #{JSON.stringify message}"

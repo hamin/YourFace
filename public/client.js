@@ -53,26 +53,19 @@
     $("#playingField").append("<div class='opponent'><div id='opponent'></div></div>");
     $("#playingField").append("<div class='me'><div id='me'></div></div>");
     return $('body').keydown(function(event) {
-      var curLeftPos, curTopPos;
+      var curLeftPos, curTopPos, offset;
       curLeftPos = $(".me").offset().left;
       curTopPos = $(".me").offset().left;
-      switch (event.keyCode) {
-        case 37:
-          return $(".me").offset({
-            left: curLeftPos - 10
-          });
-        case 39:
-          return $(".me").offset({
-            left: curLeftPos + 10
-          });
-        case 38:
-          return $(".me").offset({
-            top: curTopPos - 10
-          });
-        case 40:
-          return $(".me").offset({
-            top: curTopPos + 10
-          });
+      offset = 50;
+      if (event.keyCode === 37) {
+        $(".me").offset({
+          left: Math.max(13, curLeftPos - offset)
+        });
+      }
+      if (event.keyCode === 39) {
+        return $(".me").offset({
+          left: Math.min(600, curLeftPos + offset)
+        });
       }
     });
   });
