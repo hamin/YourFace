@@ -29,6 +29,7 @@
 }
 
 .bullet {
+  border-style: solid;
 	border-color: white;
 	background-color: black;
 	border-width: 2px;

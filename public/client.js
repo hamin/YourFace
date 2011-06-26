@@ -1,11 +1,13 @@
 (function() {
-  var addHandler, apiKey, client, clientId, connectOpenTok, opponentToken, session, sessionId, setupSession, shoot, subscribeToStreams, token, updateDivPosition;
+  var addHandler, apiKey, bulletNum, bullets, client, clientId, connectOpenTok, opponentToken, session, sessionId, setupSession, shoot, subscribeToStreams, token, updateDivPosition;
   sessionId = null;
   apiKey = null;
   token = null;
   opponentToken = null;
   session = null;
   clientId = -1;
+  bullets = [];
+  bulletNum = 0;
   addHandler = function(session, type, callback) {
     console.log("addHandler");
     return session.addEventListener(type, callback);
@@ -59,21 +61,24 @@
     });
   };
   shoot = function(position) {
-    console.log("shoot bitch shoot!");
-    $("#playingField").append("<div class='bullet'></div>");
-    $(".bullet").offset({
+    var bulletName;
+    ++bulletNum;
+    bullets.push(bulletNum);
+    bulletName = "b" + bulletNum;
+    console.log("shoot bitch shoot! bulletName=" + bulletName + " x: " + position.x + " y: " + position.y);
+    $("#playingField").append("<div id='" + bulletName + "' class='bullet'></div>");
+    $("#" + bulletName).offset({
       left: position.x,
       top: position.y
     });
-    return $(".bullet").animate({
+    $("#" + bulletName).animate({
       top: position.y - 915
-    }, 400, function() {
-      if ($(".bullet").offset().top === 8) {
-        return $(".bullet").remove();
-      }
-    });
+    }, 400, function() {});
+    if ($("#" + bulletName).offset().top === 8) {
+      return $("#" + bulletName).remove();
+    }
   };
-  client = new Faye.Client("http://192.168.201.92:3000/faye");
+  client = new Faye.Client("http://localhost:3000/faye");
   client.subscribe("/yourface", function(message) {
     if (clientId < 0) {
       sessionId = message.sessionId;
@@ -105,8 +110,8 @@
       }
       if (event.keyCode === 16) {
         shoot({
-          x: curLeftPos,
-          y: curTopPos
+          x: curLeftPos + 50,
+          y: curTopPos - 15
         });
       }
       return client.publish("/opponentPos", {
