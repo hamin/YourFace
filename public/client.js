@@ -97,7 +97,7 @@
       }).apply(this, arguments), _ref) >= 0) {
         console.log("BOOM!!!!");
       }
-      if ($("#" + bulletName).offset().top < 8) {
+      if ((isOpp === true && $("#" + bulletName).offset().top > 800) || (isOpp === false && $("#" + bulletName).offset().top < 8)) {
         return $("#" + bulletName).remove();
       }
     });

@@ -68,7 +68,8 @@ shoot = (position, isOpp) ->
        console.log("BOOM!!!!")
        
      # If it leaves playing field remove the bullet
-     $("##{bulletName}").remove() if $("##{bulletName}").offset().top < 8   
+     if ( isOpp is true && $("##{bulletName}").offset().top > 800 ) or ( isOpp is false && $("##{bulletName}").offset().top < 8 )
+       $("##{bulletName}").remove()
 
 client = new Faye.Client "http://192.168.201.92:3000/faye"        
 # client = new Faye.Client "http://localhost:3000/faye"
