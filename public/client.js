@@ -1,5 +1,5 @@
 (function() {
-  var addHandler, apiKey, bulletNum, bullets, client, clientId, connectOpenTok, hits, myScore, oppScore, opponentToken, session, sessionId, setupSession, shoot, subscribeToStreams, token, updateDivPosition;
+  var addHandler, apiKey, bulletNum, bullets, client, clientId, connectOpenTok, myHits, myScore, oppHits, oppScore, opponentToken, session, sessionId, setupSession, shoot, subscribeToStreams, token, updateDivPosition;
   var __indexOf = Array.prototype.indexOf || function(item) {
     for (var i = 0, l = this.length; i < l; i++) {
       if (this[i] === item) return i;
@@ -16,7 +16,8 @@
   bulletNum = 0;
   myScore = 0;
   oppScore = 0;
-  hits = 0;
+  oppHits = 0;
+  myHits = 0;
   addHandler = function(session, type, callback) {
     console.log("addHandler");
     return session.addEventListener(type, callback);
@@ -125,15 +126,25 @@
           top: top + 50
         });
         setTimeout("$(\"#explosion\").remove()", 250);
-        hitName = "h" + hits;
-        $(".opponent").append("<div id='" + hitName + "' class='hit'></div>");
-        $("#" + hitName).offset({
-          left: (hits % 3) * 30 + 20,
-          top: (Math.floor(hits / 3)) * 30 + 20
-        });
-        ++hits;
+        if (isOpp === false) {
+          hitName = "oppHits" + oppHits;
+          $(".opponent").append("<div id='" + hitName + "' class='oppHit'></div>");
+          $("#" + hitName).offset({
+            left: (oppHits % 3) * 30 + 20,
+            top: (Math.floor(oppHits / 3)) * 30 + 20
+          });
+          ++oppHits;
+        } else {
+          hitName = "myHits" + myHits;
+          $(".me").append("<div id='" + hitName + "' class='myHit'></div>");
+          $("#" + hitName).offset({
+            left: (myHits % 3) * 30 + 20,
+            top: (Math.floor(myHits / 3)) * 30 + 20
+          });
+          ++oppHits;
+        }
         console.log($("#" + hitName).offset());
-        if (hits === 9) {
+        if (oppHits === 9 || myHits === 9) {
           alert("Game OVER!!!");
         }
       }
@@ -142,7 +153,7 @@
       }
     });
   };
-  client = new Faye.Client("http://localhost:3000/faye");
+  client = new Faye.Client("http://192.168.201.92:3000/faye");
   client.subscribe("/yourface", function(message) {
     if (clientId < 0) {
       sessionId = message.sessionId;

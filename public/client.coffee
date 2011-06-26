@@ -8,7 +8,8 @@ bullets = []
 bulletNum = 0
 myScore = 0
 oppScore = 0
-hits=0
+oppHits=0
+myHits=0
 
 addHandler = (session,type,callback) ->
 	console.log "addHandler"
@@ -88,21 +89,27 @@ shoot = (position, isOpp) ->
        setTimeout "$(\"#explosion\").remove()", 250
        # add hit
        
-       hitName = "h#{hits}"
-       $(".opponent").append "<div id='#{hitName}' class='hit'></div>"
-       $("##{hitName}").offset left: (hits%3) * 30 + 20, top: (Math.floor hits/3) * 30 + 20
-       ++hits;
+       if isOpp is false
+         hitName = "oppHits#{oppHits}"
+         $(".opponent").append "<div id='#{hitName}' class='oppHit'></div>"
+         $("##{hitName}").offset left: (oppHits%3) * 30 + 20, top: (Math.floor oppHits/3) * 30 + 20
+         ++oppHits;
+       else
+         hitName = "myHits#{myHits}"
+         $(".me").append "<div id='#{hitName}' class='myHit'></div>"
+         $("##{hitName}").offset left: (myHits%3) * 30 + 20, top: (Math.floor myHits/3) * 30 + 20
+         ++oppHits;
        
        console.log $("##{hitName}").offset()
        
-       alert "Game OVER!!!" if hits is 9
+       alert "Game OVER!!!" if oppHits is 9 or myHits is 9
        
      # If it leaves playing field remove the bullet
      if ( isOpp is true && $("##{bulletName}").offset().top > 800 ) or ( isOpp is false && $("##{bulletName}").offset().top < 8 )
        $("##{bulletName}").remove()
 
-#client = new Faye.Client "http://192.168.201.92:3000/faye"        
-client = new Faye.Client "http://localhost:3000/faye"
+client = new Faye.Client "http://192.168.201.92:3000/faye"        
+#client = new Faye.Client "http://localhost:3000/faye"
 
 client.subscribe "/yourface", (message) ->
   if clientId < 0

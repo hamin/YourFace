@@ -65,8 +65,18 @@ body{ overflow: hidden;}
 	height: 50px;
 }
 
-.hit {
+.oppHit {
   background-color: blue;
+  border-color: black;
+  border-width: 1px;
+  border-style: solid;
+	border-radius: 15px;
+  width: 33px;
+  height: 33px;
+}
+
+.myHit {
+  background-color: orange;
   border-color: black;
   border-width: 1px;
   border-style: solid;
