@@ -1,5 +1,5 @@
 (function() {
-  var addHandler, apiKey, bulletNum, bullets, client, clientId, connectOpenTok, opponentToken, session, sessionId, setupSession, shoot, subscribeToStreams, token, updateDivPosition;
+  var addHandler, apiKey, bulletNum, bullets, client, clientId, connectOpenTok, hits, myScore, oppScore, opponentToken, session, sessionId, setupSession, shoot, subscribeToStreams, token, updateDivPosition;
   var __indexOf = Array.prototype.indexOf || function(item) {
     for (var i = 0, l = this.length; i < l; i++) {
       if (this[i] === item) return i;
@@ -14,6 +14,9 @@
   clientId = -1;
   bullets = [];
   bulletNum = 0;
+  myScore = 0;
+  oppScore = 0;
+  hits = 0;
   addHandler = function(session, type, callback) {
     console.log("addHandler");
     return session.addEventListener(type, callback);
@@ -88,7 +91,7 @@
     return $("#" + bulletName).animate({
       top: position.y + sign * 915
     }, 400, function() {
-      var explosionClass, i, meTop, oppLeft, oppTop, oppWidth, top, _i, _ref, _results;
+      var explosionClass, hitName, i, meTop, oppLeft, oppTop, oppWidth, top, _i, _ref, _results;
       i = bullets.indexOf(bulletName);
       bullets.splice(i);
       oppTop = $('.opponent').offset().top;
@@ -101,6 +104,13 @@
         return _results;
       }).apply(this, arguments), _ref) >= 0) {
         console.log("BOOM!!!!");
+        if (isOpp === true) {
+          oppScore += 1;
+        } else {
+          myScore += 1;
+        }
+        $('#myScore').html("<h3>" + myScore + "</h3>");
+        $('#oppScore').html("<h3>" + oppScore + "</h3>");
         explosionClass = "explosionBlue";
         if (isOpp === true) {
           explosionClass = "explosion";
@@ -115,6 +125,17 @@
           top: top + 50
         });
         setTimeout("$(\"#explosion\").remove()", 250);
+        hitName = "h" + hits;
+        $(".opponent").append("<div id='" + hitName + "' class='hit'></div>");
+        $("#" + hitName).offset({
+          left: (hits % 3) * 30 + 20,
+          top: (Math.floor(hits / 3)) * 30 + 20
+        });
+        ++hits;
+        console.log($("#" + hitName).offset());
+        if (hits === 9) {
+          alert("Game OVER!!!");
+        }
       }
       if ((isOpp === true && $("#" + bulletName).offset().top > 800) || (isOpp === false && $("#" + bulletName).offset().top < 8)) {
         return $("#" + bulletName).remove();

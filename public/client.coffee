@@ -6,6 +6,9 @@ session = null
 clientId = -1
 bullets = []
 bulletNum = 0
+myScore = 0
+oppScore = 0
+hits=0
 
 addHandler = (session,type,callback) ->
 	console.log "addHandler"
@@ -72,6 +75,10 @@ shoot = (position, isOpp) ->
      
      if $("##{bulletName}").offset().left in [oppLeft..oppWidth]
        console.log("BOOM!!!!")
+       if isOpp == true then (oppScore += 1) else (myScore += 1)
+       $('#myScore').html "<h3>#{myScore}</h3>"
+       $('#oppScore').html "<h3>#{oppScore}</h3>"
+       # add explosion
        explosionClass = "explosionBlue"
        explosionClass = "explosion" if isOpp is true
        $("#playingField").append "<div id='explosion' class='#{explosionClass}'></div>"  
@@ -79,6 +86,16 @@ shoot = (position, isOpp) ->
        top = meTop if isOpp is true
        $("#explosion").offset left: oppLeft+50, top: top+50
        setTimeout "$(\"#explosion\").remove()", 250
+       # add hit
+       
+       hitName = "h#{hits}"
+       $(".opponent").append "<div id='#{hitName}' class='hit'></div>"
+       $("##{hitName}").offset left: (hits%3) * 30 + 20, top: (Math.floor hits/3) * 30 + 20
+       ++hits;
+       
+       console.log $("##{hitName}").offset()
+       
+       alert "Game OVER!!!" if hits is 9
        
      # If it leaves playing field remove the bullet
      if ( isOpp is true && $("##{bulletName}").offset().top > 800 ) or ( isOpp is false && $("##{bulletName}").offset().top < 8 )

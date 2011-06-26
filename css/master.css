@@ -7,6 +7,12 @@ body{ overflow: hidden;}
 	background-color: black;
 	width: 700px;
 	height: 900px;
+	float:left;
+}
+
+#rightCol {
+  float:right;
+  margin-right:150px;
 }
 
 .me {
@@ -56,4 +62,14 @@ body{ overflow: hidden;}
 	display: inline-block;
 	width: 50px;
 	height: 50px;
+}
+
+.hit {
+  background-color: blue;
+  border-color: black;
+  border-width: 1px;
+  border-style: solid;
+	border-radius: 15px;
+  width: 33px;
+  height: 33px;
 }
