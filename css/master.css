@@ -1,0 +1,29 @@
+.playingField {
+	border-style: solid;
+	border-color: green;
+	border-width: 5px;
+	background-color: gray;
+	width: 700px;
+	height: 900px;
+}
+
+.me {
+	border-style: solid;
+	border-color: white;
+	border-width: 5px;
+	border-radius: 15px;
+	position: absolute;
+	width: 100px;
+	height: 100px;
+	top: 800px;
+}
+
+.opponent {
+	border-style: solid;
+	border-color: orange;
+	border-width: 5px;
+	border-radius: 15px;
+	width: 100px;
+	height: 100px;
+	top: 0px;
+}

@@ -1,6 +1,5 @@
 (function() {
   var addHandler, apiKey, client, connectOpenTok, session, sessionId, setupSession, subscribeToStreams, token;
-  client = new Faye.Client("http://localhost:3000/faye");
   sessionId = null;
   apiKey = null;
   token = null;
@@ -10,20 +9,31 @@
     return session.addEventListener(type, callback);
   };
   subscribeToStreams = function(streams) {
-    var stream, _i, _len, _results;
+    var stream, streamProps, _i, _len, _results;
+    streamProps = {
+      width: 100,
+      height: 100,
+      subscribeToAudio: false
+    };
     _results = [];
     for (_i = 0, _len = streams.length; _i < _len; _i++) {
       stream = streams[_i];
-      _results.push(stream.connection.connectionId !== session.connection.connectionId ? session.subscribe(stream) : void 0);
+      _results.push(stream.connection.connectionId !== session.connection.connectionId ? session.subscribe(stream, "opponent", streamProps) : void 0);
     }
     return _results;
   };
   setupSession = function(session) {
     console.log("setupSession " + session);
     addHandler(session, "sessionConnected", function(event) {
+      var publishProps;
       console.log("sessionConnected");
       subscribeToStreams(event.streams);
-      return session.publish();
+      publishProps = {
+        width: 100,
+        height: 100,
+        subscribeToAudio: false
+      };
+      return session.publish("me", publishProps);
     });
     return addHandler(session, "streamCreated", function(event) {
       console.log("streamCreated");
@@ -38,6 +48,11 @@
     console.log("apiKey = " + apiKey + " token = " + token);
     return session.connect(apiKey, token);
   };
+  $(document).ready(function() {
+    $("#playingField").append("<div id='opponent' class='opponent' />");
+    return $("#playingField").append("<div class='me'><div id='me'></div></div>");
+  });
+  client = new Faye.Client("http://localhost:3000/faye");
   client.subscribe("/yourface", function(message) {
     console.log("faye message -> " + (JSON.stringify(message)));
     sessionId = message.sessionId;
