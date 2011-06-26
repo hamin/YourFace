@@ -51,8 +51,8 @@ shoot = (position, isOpp) ->
    ++bulletNum
    bullets.push bulletNum
    bulletName = "b#{bulletNum}"
-   bulletClass = "bullet"
-   bulletClass = "bulletBlue" if isOpp is true
+   bulletClass = "bulletBlue"
+   bulletClass = "bullet" if isOpp is true
    console.log "shoot bitch shoot! bulletName=#{bulletName} x: #{position.x} y: #{position.y}"
    $("#playingField").append "<div id='#{bulletName}' class='#{bulletClass}'></div>"
       

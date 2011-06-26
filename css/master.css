@@ -11,7 +11,7 @@ body{ overflow: hidden;}
 
 .me {
 	border-style: solid;
-	border-color: white;
+	border-color: blue;
 	border-width: 5px;
 	border-radius: 15px;
 	position: absolute;
