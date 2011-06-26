@@ -88,12 +88,13 @@
     return $("#" + bulletName).animate({
       top: position.y + sign * 915
     }, 400, function() {
-      var explosionClass, i, oppLeft, oppTop, oppWidth, _i, _ref, _results;
+      var explosionClass, i, meTop, oppLeft, oppTop, oppWidth, top, _i, _ref, _results;
       i = bullets.indexOf(bulletName);
       bullets.splice(i);
       oppTop = $('.opponent').offset().top;
       oppLeft = $('.opponent').offset().left;
       oppWidth = oppLeft + $('.opponent').width();
+      meTop = $('.me').offset().top;
       if (_ref = $("#" + bulletName).offset().left, __indexOf.call((function() {
         _results = [];
         for (var _i = oppLeft; oppLeft <= oppWidth ? _i <= oppWidth : _i >= oppWidth; oppLeft <= oppWidth ? _i++ : _i--){ _results.push(_i); }
@@ -105,6 +106,10 @@
           explosionClass = "explosion";
         }
         $("#playingField").append("<div id='explosion' class='" + explosionClass + "'></div>");
+        top = oppTop;
+        if (isOpp === true) {
+          top = meTop;
+        }
         $("#explosion").offset({
           left: oppLeft + 50,
           top: oppTop + 50

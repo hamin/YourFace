@@ -67,11 +67,16 @@ shoot = (position, isOpp) ->
      oppTop = $('.opponent').offset().top
      oppLeft = $('.opponent').offset().left
      oppWidth = oppLeft + $('.opponent').width()
+     
+     meTop = $('.me').offset().top;
+     
      if $("##{bulletName}").offset().left in [oppLeft..oppWidth]
        console.log("BOOM!!!!")
        explosionClass = "explosionBlue"
        explosionClass = "explosion" if isOpp is true
-       $("#playingField").append "<div id='explosion' class='#{explosionClass}'></div>"     
+       $("#playingField").append "<div id='explosion' class='#{explosionClass}'></div>"  
+       top = oppTop;
+       top = meTop if isOpp is true
        $("#explosion").offset left: oppLeft+50, top: oppTop+50
        setTimeout "$(\"#explosion\").remove()", 250
        
