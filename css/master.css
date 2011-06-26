@@ -7,6 +7,12 @@
 	background-color: gray;
 	width: 700px;
 	height: 900px;
+	float:left;
+}
+
+#rightCol {
+  float:right;
+  margin-right:150px;
 }
 
 .me {
