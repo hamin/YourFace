@@ -33,13 +33,27 @@ body{ overflow: hidden;}
 .bullet {
   background-image:url("/assets/bullet.png");
 	display: inline-block;
-	width: 29px;
-	height: 29px;
+	width: 36px;
+	height: 36px;
 }
 
 .bulletBlue {
   background-image:url("/assets/bullet_blue.png");
 	display: inline-block;
-	width: 29px;
-	height: 29px;
+	width: 36px;
+	height: 36px;
+}
+
+.explosion {
+  background-image:url("/assets/explosion.png");
+	display: inline-block;
+	width: 50px;
+	height: 50px;
+}
+
+.explosionBlue {
+  background-image:url("/assets/explosion_blue.png");
+	display: inline-block;
+	width: 50px;
+	height: 50px;
 }

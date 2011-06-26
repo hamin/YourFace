@@ -71,9 +71,9 @@
     ++bulletNum;
     bullets.push(bulletNum);
     bulletName = "b" + bulletNum;
-    bulletClass = "bullet";
+    bulletClass = "bulletBlue";
     if (isOpp === true) {
-      bulletClass = "bulletBlue";
+      bulletClass = "bullet";
     }
     console.log("shoot bitch shoot! bulletName=" + bulletName + " x: " + position.x + " y: " + position.y);
     $("#playingField").append("<div id='" + bulletName + "' class='" + bulletClass + "'></div>");
@@ -88,7 +88,7 @@
     return $("#" + bulletName).animate({
       top: position.y + sign * 915
     }, 400, function() {
-      var i, oppLeft, oppTop, oppWidth, _i, _ref, _results;
+      var explosionClass, i, oppLeft, oppTop, oppWidth, _i, _ref, _results;
       i = bullets.indexOf(bulletName);
       bullets.splice(i);
       oppTop = $('.opponent').offset().top;
@@ -100,6 +100,16 @@
         return _results;
       }).apply(this, arguments), _ref) >= 0) {
         console.log("BOOM!!!!");
+        explosionClass = "explosionBlue";
+        if (isOpp === true) {
+          explosionClass = "explosion";
+        }
+        $("#playingField").append("<div id='explosion' class='" + explosionClass + "'></div>");
+        $("#explosion").offset({
+          left: oppLeft + 50,
+          top: oppTop + 50
+        });
+        setTimeout("$(\"#explosion\").remove()", 250);
       }
       if ((isOpp === true && $("#" + bulletName).offset().top > 800) || (isOpp === false && $("#" + bulletName).offset().top < 8)) {
         return $("#" + bulletName).remove();

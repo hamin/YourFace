@@ -69,13 +69,18 @@ shoot = (position, isOpp) ->
      oppWidth = oppLeft + $('.opponent').width()
      if $("##{bulletName}").offset().left in [oppLeft..oppWidth]
        console.log("BOOM!!!!")
+       explosionClass = "explosionBlue"
+       explosionClass = "explosion" if isOpp is true
+       $("#playingField").append "<div id='explosion' class='#{explosionClass}'></div>"     
+       $("#explosion").offset left: oppLeft+50, top: oppTop+50
+       setTimeout "$(\"#explosion\").remove()", 250
        
      # If it leaves playing field remove the bullet
      if ( isOpp is true && $("##{bulletName}").offset().top > 800 ) or ( isOpp is false && $("##{bulletName}").offset().top < 8 )
        $("##{bulletName}").remove()
 
-client = new Faye.Client "http://192.168.201.92:3000/faye"        
-#client = new Faye.Client "http://localhost:3000/faye"
+#client = new Faye.Client "http://192.168.201.92:3000/faye"        
+client = new Faye.Client "http://localhost:3000/faye"
 
 client.subscribe "/yourface", (message) ->
   if clientId < 0
