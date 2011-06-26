@@ -67,9 +67,16 @@
     bulletName = "b" + bulletNum;
     console.log("shoot bitch shoot! bulletName=" + bulletName + " x: " + position.x + " y: " + position.y);
     $("#playingField").append("<div id='" + bulletName + "' class='bullet'></div>");
-    return $("#" + bulletName).offset({
+    $("#" + bulletName).offset({
       left: position.x,
       top: position.y
+    });
+    return $("#" + bulletName).animate({
+      top: position.y - 915
+    }, 400, function() {
+      if ($("#" + bulletName).offset().top === 8) {
+        return $("#" + bulletName).remove();
+      }
     });
   };
   client = new Faye.Client("http://localhost:3000/faye");

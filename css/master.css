@@ -29,11 +29,8 @@
 }
 
 .bullet {
-  border-style: solid;
-	border-color: white;
-	background-color: black;
-	border-width: 2px;
-	border-radius: 5px;
-	width: 10px;
-	height: 10px;
+  background-image:url("/assets/bullet.png");
+	display: inline-block;
+	width: 29px;
+	height: 29px;
 }

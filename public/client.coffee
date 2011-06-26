@@ -53,6 +53,8 @@ shoot = (position) ->
 	console.log "shoot bitch shoot! bulletName=#{bulletName} x: #{position.x} y: #{position.y}"
 	$("#playingField").append "<div id='#{bulletName}' class='bullet'></div>"
 	$("##{bulletName}").offset left: position.x, top: position.y
+	$("##{bulletName}").animate {top: (position.y - 915) }, 400, () ->
+    $("##{bulletName}").remove() if $("##{bulletName}").offset().top is 8
 	
 
 #client = new Faye.Client "http://192.168.201.92:3000/faye"	      
@@ -74,8 +76,9 @@ $(document).ready () ->
 	client.subscribe "/opponentPos", (message) ->
     if message.oppClientId isnt clientId
       updateDivPosition "opponent", message.curLeftPos
-  # Arrow Button Bindings
-
+  
+  
+  # Arrow Button Bindings 
 	$('body').keydown (event) ->
 	  console.log "keyCode #{event.keyCode}"
 	  curLeftPos = $(".me").offset().left
