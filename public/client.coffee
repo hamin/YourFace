@@ -39,7 +39,7 @@ connectOpenTok = () ->
 
 # creating player divs
 $(document).ready () ->
-	$("#playingField").append "<div id='opponent' class='opponent' />"
+	$("#playingField").append "<div class='opponent'><div id='opponent'></div></div>"
 	$("#playingField").append "<div class='me'><div id='me'></div></div>"  	
 	
 client = new Faye.Client "http://localhost:3000/faye"

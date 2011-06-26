@@ -1,9 +1,6 @@
 (function() {
   var addHandler, apiKey, client, connectOpenTok, session, sessionId, setupSession, subscribeToStreams, token;
-<<<<<<< HEAD
-=======
-  client = new Faye.Client("http://192.168.50.152:3000/faye");
->>>>>>> 7bf87c7ab3953aa7e11d464d77e683fddf11c0d3
+  client = new Faye.Client("http://localhost:3000/faye");
   sessionId = null;
   apiKey = null;
   token = null;
@@ -53,7 +50,7 @@
     return session.connect(apiKey, token);
   };
   $(document).ready(function() {
-    $("#playingField").append("<div id='opponent' class='opponent' />");
+    $("#playingField").append("<div class='opponent'><div id='opponent'></div></div>");
     return $("#playingField").append("<div class='me'><div id='me'></div></div>");
   });
   client = new Faye.Client("http://localhost:3000/faye");
