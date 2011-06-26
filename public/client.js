@@ -67,12 +67,16 @@
     });
   };
   shoot = function(position, isOpp) {
-    var bulletName, sign;
+    var bulletClass, bulletName, sign;
     ++bulletNum;
     bullets.push(bulletNum);
     bulletName = "b" + bulletNum;
+    bulletClass = "bullet";
+    if (isOpp === true) {
+      bulletClass = "bulletBlue";
+    }
     console.log("shoot bitch shoot! bulletName=" + bulletName + " x: " + position.x + " y: " + position.y);
-    $("#playingField").append("<div id='" + bulletName + "' class='bullet'></div>");
+    $("#playingField").append("<div id='" + bulletName + "' class='" + bulletClass + "'></div>");
     $("#" + bulletName).offset({
       left: position.x,
       top: position.y
@@ -102,7 +106,7 @@
       }
     });
   };
-  client = new Faye.Client("http://192.168.201.92:3000/faye");
+  client = new Faye.Client("http://localhost:3000/faye");
   client.subscribe("/yourface", function(message) {
     if (clientId < 0) {
       sessionId = message.sessionId;

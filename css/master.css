@@ -36,3 +36,10 @@ body{ overflow: hidden;}
 	width: 29px;
 	height: 29px;
 }
+
+.bulletBlue {
+  background-image:url("/assets/bullet_blue.png");
+	display: inline-block;
+	width: 29px;
+	height: 29px;
+}

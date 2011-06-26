@@ -51,8 +51,10 @@ shoot = (position, isOpp) ->
    ++bulletNum
    bullets.push bulletNum
    bulletName = "b#{bulletNum}"
+   bulletClass = "bullet"
+   bulletClass = "bulletBlue" if isOpp is true
    console.log "shoot bitch shoot! bulletName=#{bulletName} x: #{position.x} y: #{position.y}"
-   $("#playingField").append "<div id='#{bulletName}' class='bullet'></div>"
+   $("#playingField").append "<div id='#{bulletName}' class='#{bulletClass}'></div>"
       
    $("##{bulletName}").offset left: position.x, top: position.y
    sign = -1
@@ -73,7 +75,7 @@ shoot = (position, isOpp) ->
        $("##{bulletName}").remove()
 
 client = new Faye.Client "http://192.168.201.92:3000/faye"        
-# client = new Faye.Client "http://localhost:3000/faye"
+#client = new Faye.Client "http://localhost:3000/faye"
 
 client.subscribe "/yourface", (message) ->
   if clientId < 0
