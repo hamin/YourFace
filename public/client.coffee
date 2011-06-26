@@ -92,12 +92,12 @@ shoot = (position, isOpp) ->
        if isOpp is false
          hitName = "oppHits#{oppHits}"
          $(".opponent").append "<div id='#{hitName}' class='oppHit'></div>"
-         $("##{hitName}").offset left: (oppHits%3) * 30 + 20, top: (Math.floor oppHits/3) * 30 + 20
+         $("##{hitName}").offset left: (oppHits%3) * 30 + 6 + $(".opponent").offset().left , top: (Math.floor oppHits/3) * 30 + 20
          ++oppHits;
        else
          hitName = "myHits#{myHits}"
          $(".me").append "<div id='#{hitName}' class='myHit'></div>"
-         $("##{hitName}").offset left: (myHits%3) * 30 + 20, top: (Math.floor myHits/3) * 30 + 620
+         $("##{hitName}").offset left: (myHits%3) * 30 + 6 + $(".me").offset().left, top: (Math.floor myHits/3) * 30 + 808
          ++myHits;
        
        console.log $("##{hitName}").offset()
