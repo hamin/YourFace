@@ -52,7 +52,8 @@ $(document).ready () ->
 	  if event.keyCode is 39 	
       		$(".me").offset left: Math.min 600, curLeftPos + offset
 	  # spacebar
-
+	  if event.keyCode is 32
+	  		-
 	    # when 38
 	    #   # top
 	    #   $(".me").offset top: (curTopPos - 10)
