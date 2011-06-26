@@ -56,7 +56,16 @@ shoot = (position) ->
    $("##{bulletName}").animate {top: (position.y - 915) }, 400, () ->
      i = bullets.indexOf bulletName
      bullets.splice i
-     $("##{bulletName}").remove() if $("##{bulletName}").offset().top < 8
+
+     # If it hits opponent remove the field and do some stuff
+     oppTop = $('.opponent').offset().top
+     oppLeft = $('.opponent').offset().left
+     oppWidth = oppLeft + $('.opponent').width()
+     if $("##{bulletName}").offset().left in [oppLeft..oppWidth]
+       alert("BOOM!!!!")
+       
+     # If it leaves playing field remove the bullet
+     $("##{bulletName}").remove() if $("##{bulletName}").offset().top < 8   
 
 #client = new Faye.Client "http://192.168.201.92:3000/faye"	      
 client = new Faye.Client "http://localhost:3000/faye"

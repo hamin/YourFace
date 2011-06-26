@@ -1,5 +1,11 @@
 (function() {
   var addHandler, apiKey, bulletNum, bullets, client, clientId, connectOpenTok, opponentToken, session, sessionId, setupSession, shoot, subscribeToStreams, token, updateDivPosition;
+  var __indexOf = Array.prototype.indexOf || function(item) {
+    for (var i = 0, l = this.length; i < l; i++) {
+      if (this[i] === item) return i;
+    }
+    return -1;
+  };
   sessionId = null;
   apiKey = null;
   token = null;
@@ -74,9 +80,19 @@
     return $("#" + bulletName).animate({
       top: position.y - 915
     }, 400, function() {
-      var i;
+      var i, oppLeft, oppTop, oppWidth, _i, _ref, _results;
       i = bullets.indexOf(bulletName);
       bullets.splice(i);
+      oppTop = $('.opponent').offset().top;
+      oppLeft = $('.opponent').offset().left;
+      oppWidth = oppLeft + $('.opponent').width();
+      if (_ref = $("#" + bulletName).offset().left, __indexOf.call((function() {
+        _results = [];
+        for (var _i = oppLeft; oppLeft <= oppWidth ? _i <= oppWidth : _i >= oppWidth; oppLeft <= oppWidth ? _i++ : _i--){ _results.push(_i); }
+        return _results;
+      }).apply(this, arguments), _ref) >= 0) {
+        alert("BOOM!!!!");
+      }
       if ($("#" + bulletName).offset().top < 8) {
         return $("#" + bulletName).remove();
       }
