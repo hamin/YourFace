@@ -27,3 +27,12 @@
 	height: 100px;
 	top: 0px;
 }
+
+.bullet {
+	border-color: white;
+	background-color: black;
+	border-width: 2px;
+	border-radius: 5px;
+	width: 10px;
+	height: 10px;
+}

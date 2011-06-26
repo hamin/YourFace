@@ -1,5 +1,5 @@
 (function() {
-  var addHandler, apiKey, client, clientId, connectOpenTok, opponentToken, session, sessionId, setupSession, subscribeToStreams, token, updateDivPosition;
+  var addHandler, apiKey, client, clientId, connectOpenTok, opponentToken, session, sessionId, setupSession, shoot, subscribeToStreams, token, updateDivPosition;
   sessionId = null;
   apiKey = null;
   token = null;
@@ -58,7 +58,15 @@
       left: newPosition
     });
   };
-  client = new Faye.Client("http://192.168.201.92:3000/faye");
+  shoot = function(position) {
+    console.log("shoot bitch shoot!");
+    $("#playingField").append("<div class='bullet'></div>");
+    return $(".bullet").offset({
+      left: position.x,
+      top: position.y
+    });
+  };
+  client = new Faye.Client("http://localhost:3000/faye");
   client.subscribe("/yourface", function(message) {
     if (clientId < 0) {
       sessionId = message.sessionId;
@@ -77,14 +85,23 @@
       }
     });
     return $('body').keydown(function(event) {
-      var curLeftPos, offset;
+      var curLeftPos, curTopPos, offset;
+      console.log("keyCode " + event.keyCode);
       curLeftPos = $(".me").offset().left;
+      curTopPos = $(".me").offset().top;
       offset = 50;
       if (event.keyCode === 37) {
         updateDivPosition("me", curLeftPos - offset);
       }
       if (event.keyCode === 39) {
         updateDivPosition("me", curLeftPos + offset);
+      }
+      if (event.keyCode === 32) {
+        console.log("about to shoot");
+        shoot({
+          x: curLeftPos,
+          y: curTopPos
+        });
       }
       return client.publish("/opponentPos", {
         curLeftPos: $(".me").offset().left,

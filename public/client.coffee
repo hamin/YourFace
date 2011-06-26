@@ -44,6 +44,11 @@ updateDivPosition = (divName,newPosition) ->
   console.log "newPosition = #{newPosition}"
   $(".#{divName}").offset left: newPosition
 
+shoot = (position) ->
+	console.log "shoot bitch shoot!"
+	$("#playingField").append "<div class='bullet'></div>"
+	$(".bullet").offset left: position.x, top: position.y
+
 client = new Faye.Client "http://192.168.201.92:3000/faye"	      
 #client = new Faye.Client "http://localhost:3000/faye"
 
@@ -64,15 +69,21 @@ $(document).ready () ->
     if message.oppClientId isnt clientId
       updateDivPosition "opponent", message.curLeftPos
   # Arrow Button Bindings
-	$('body').keydown (event) ->
-	  curLeftPos = $(".me").offset().left
 
-	  offset = 50;
+	$('body').keydown (event) ->
+	  console.log "keyCode #{event.keyCode}"
+	  curLeftPos = $(".me").offset().left
+	  curTopPos = $(".me").offset().top
+	
+	  offset = 50
 	  #left
 	  if event.keyCode is 37
 	    updateDivPosition "me", curLeftPos - offset
 	  # right
 	  if event.keyCode is 39 	
       updateDivPosition "me", curLeftPos + offset
+    if event.keyCode is 32
+      console.log "about to shoot"
+      shoot x: curLeftPos, y: curTopPos
     
     client.publish "/opponentPos", {curLeftPos: $(".me").offset().left, oppClientId: clientId}
