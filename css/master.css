@@ -2,9 +2,10 @@ body{ overflow: hidden;}
 
 .playingField {
 	border-style: solid;
-	border-color: green;
+	border-color: #464646;
 	border-width: 5px;
-	background-color: black;
+	border-radius: 15px;
+  background-image:url("/assets/bg.png");
 	width: 700px;
 	height: 900px;
 	float:left;
