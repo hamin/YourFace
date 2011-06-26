@@ -1,5 +1,5 @@
 (function() {
-  var addHandler, apiKey, bulletNum, bullets, client, clientId, connectOpenTok, opponentToken, session, sessionId, setupSession, shoot, subscribeToStreams, token, updateDivPosition;
+  var addHandler, apiKey, bulletNum, bullets, client, clientId, connectOpenTok, myScore, oppScore, opponentToken, session, sessionId, setupSession, shoot, subscribeToStreams, token, updateDivPosition;
   var __indexOf = Array.prototype.indexOf || function(item) {
     for (var i = 0, l = this.length; i < l; i++) {
       if (this[i] === item) return i;
@@ -14,6 +14,8 @@
   clientId = -1;
   bullets = [];
   bulletNum = 0;
+  myScore = 0;
+  oppScore = 0;
   addHandler = function(session, type, callback) {
     console.log("addHandler");
     return session.addEventListener(type, callback);
@@ -101,6 +103,13 @@
         return _results;
       }).apply(this, arguments), _ref) >= 0) {
         console.log("BOOM!!!!");
+        if (isOpp === true) {
+          oppScore += 1;
+        } else {
+          myScore += 1;
+        }
+        $('#myScore').html("<h3>" + myScore + "</h3>");
+        $('#oppScore').html("<h3>" + oppScore + "</h3>");
         explosionClass = "explosionBlue";
         if (isOpp === true) {
           explosionClass = "explosion";

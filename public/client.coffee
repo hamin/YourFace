@@ -6,6 +6,8 @@ session = null
 clientId = -1
 bullets = []
 bulletNum = 0
+myScore = 0
+oppScore = 0
 
 addHandler = (session,type,callback) ->
 	console.log "addHandler"
@@ -72,6 +74,9 @@ shoot = (position, isOpp) ->
      
      if $("##{bulletName}").offset().left in [oppLeft..oppWidth]
        console.log("BOOM!!!!")
+       if isOpp == true then (oppScore += 1) else (myScore += 1)
+       $('#myScore').html "<h3>#{myScore}</h3>"
+       $('#oppScore').html "<h3>#{oppScore}</h3>"
        explosionClass = "explosionBlue"
        explosionClass = "explosion" if isOpp is true
        $("#playingField").append "<div id='explosion' class='#{explosionClass}'></div>"  
