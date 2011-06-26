@@ -1,5 +1,9 @@
 (function() {
   var addHandler, apiKey, client, connectOpenTok, session, sessionId, setupSession, subscribeToStreams, token;
+<<<<<<< HEAD
+=======
+  client = new Faye.Client("http://192.168.50.152:3000/faye");
+>>>>>>> 7bf87c7ab3953aa7e11d464d77e683fddf11c0d3
   sessionId = null;
   apiKey = null;
   token = null;

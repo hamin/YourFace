@@ -3,7 +3,7 @@ fs = require 'fs'
 faye = require 'faye'
 opentok = require 'opentok'
 yaml = require 'yaml'
-
+path = require 'path'
 # ********* Utility Stuff ***********
 process.on 'uncaughtException', (err) ->
   console.log "Error: #{err}"
@@ -50,4 +50,31 @@ registerPlayer = {
 bayeux.addExtension registerPlayer
 bayeux.attach server
 console.log "Starting Faye server on port 3000"
-server.listen 3000  
+server.listen 3000
+
+
+# Serve the Index.html
+http.createServer((request, response) ->
+  console.log "request starting..."
+  filePath = "." + request.url
+  filePath = "./index.html"  if filePath == "./"
+  extname = path.extname(filePath)
+  contentType = "text/html"
+  switch extname
+    when ".js"
+      contentType = "text/javascript"
+    when ".css"
+      contentType = "text/css"
+  path.exists filePath, (exists) ->
+    if exists
+      fs.readFile filePath, (error, content) ->
+        if error
+          response.writeHead 500
+          response.end()
+        else
+          response.writeHead 200, "Content-Type": contentType
+          response.end content, "utf-8"
+    else
+      response.writeHead 404
+      response.end()
+).listen 8125
