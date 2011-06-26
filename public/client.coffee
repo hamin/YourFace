@@ -46,14 +46,17 @@ updateDivPosition = (divName,newPosition) ->
   console.log "newPosition = #{newPosition}"
   $(".#{divName}").offset left: newPosition
 
-shoot = (position) ->
+shoot = (position, isOpp) ->
    ++bulletNum
    bullets.push bulletNum
    bulletName = "b#{bulletNum}"
    console.log "shoot bitch shoot! bulletName=#{bulletName} x: #{position.x} y: #{position.y}"
    $("#playingField").append "<div id='#{bulletName}' class='bullet'></div>"
+      
    $("##{bulletName}").offset left: position.x, top: position.y
-   $("##{bulletName}").animate {top: (position.y - 915) }, 400, () ->
+   sign = -1
+   sign = 1 if isOpp is true
+   $("##{bulletName}").animate {top: (position.y + sign*915) }, 400, () ->
      i = bullets.indexOf bulletName
      bullets.splice i
 
@@ -62,13 +65,13 @@ shoot = (position) ->
      oppLeft = $('.opponent').offset().left
      oppWidth = oppLeft + $('.opponent').width()
      if $("##{bulletName}").offset().left in [oppLeft..oppWidth]
-       alert("BOOM!!!!")
+       console.log("BOOM!!!!")
        
      # If it leaves playing field remove the bullet
      $("##{bulletName}").remove() if $("##{bulletName}").offset().top < 8   
 
-#client = new Faye.Client "http://192.168.201.92:3000/faye"	      
-client = new Faye.Client "http://localhost:3000/faye"
+client = new Faye.Client "http://192.168.201.92:3000/faye"        
+# client = new Faye.Client "http://localhost:3000/faye"
 
 client.subscribe "/yourface", (message) ->
   if clientId < 0
@@ -86,6 +89,9 @@ $(document).ready () ->
 	client.subscribe "/opponentPos", (message) ->
     if message.oppClientId isnt clientId
       updateDivPosition "opponent", message.curLeftPos
+  client.subscribe "/fire", (message) ->
+    if message.oppClientId isnt clientId
+      shoot {x: message.x, y: message.y}, true    
   # Arrow Button Bindings
 
 	$('body').keydown (event) ->
@@ -101,6 +107,8 @@ $(document).ready () ->
 	  if event.keyCode is 39 	
       updateDivPosition "me", curLeftPos + offset
     if event.keyCode is 16
-      shoot x: curLeftPos+50, y: curTopPos-15
+      shoot {x: curLeftPos+50, y: curTopPos-15}, false
+      oppY = $('.opponent').offset().top + $('.opponent').height()
+      client.publish '/fire', x: curLeftPos+50, y: oppY, oppClientId: clientId
     
     client.publish "/opponentPos", {curLeftPos: $(".me").offset().left, oppClientId: clientId}

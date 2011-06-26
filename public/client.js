@@ -66,8 +66,8 @@
       left: newPosition
     });
   };
-  shoot = function(position) {
-    var bulletName;
+  shoot = function(position, isOpp) {
+    var bulletName, sign;
     ++bulletNum;
     bullets.push(bulletNum);
     bulletName = "b" + bulletNum;
@@ -77,8 +77,12 @@
       left: position.x,
       top: position.y
     });
+    sign = -1;
+    if (isOpp === true) {
+      sign = 1;
+    }
     return $("#" + bulletName).animate({
-      top: position.y - 915
+      top: position.y + sign * 915
     }, 400, function() {
       var i, oppLeft, oppTop, oppWidth, _i, _ref, _results;
       i = bullets.indexOf(bulletName);
@@ -91,14 +95,14 @@
         for (var _i = oppLeft; oppLeft <= oppWidth ? _i <= oppWidth : _i >= oppWidth; oppLeft <= oppWidth ? _i++ : _i--){ _results.push(_i); }
         return _results;
       }).apply(this, arguments), _ref) >= 0) {
-        alert("BOOM!!!!");
+        console.log("BOOM!!!!");
       }
       if ($("#" + bulletName).offset().top < 8) {
         return $("#" + bulletName).remove();
       }
     });
   };
-  client = new Faye.Client("http://localhost:3000/faye");
+  client = new Faye.Client("http://192.168.201.92:3000/faye");
   client.subscribe("/yourface", function(message) {
     if (clientId < 0) {
       sessionId = message.sessionId;
@@ -116,8 +120,16 @@
         return updateDivPosition("opponent", message.curLeftPos);
       }
     });
+    client.subscribe("/fire", function(message) {
+      if (message.oppClientId !== clientId) {
+        return shoot({
+          x: message.x,
+          y: message.y
+        }, true);
+      }
+    });
     return $('body').keydown(function(event) {
-      var curLeftPos, curTopPos, offset;
+      var curLeftPos, curTopPos, offset, oppY;
       console.log("keyCode " + event.keyCode);
       curLeftPos = $(".me").offset().left;
       curTopPos = $(".me").offset().top;
@@ -132,6 +144,12 @@
         shoot({
           x: curLeftPos + 50,
           y: curTopPos - 15
+        }, false);
+        oppY = $('.opponent').offset().top + $('.opponent').height();
+        client.publish('/fire', {
+          x: curLeftPos + 50,
+          y: oppY,
+          oppClientId: clientId
         });
       }
       return client.publish("/opponentPos", {
