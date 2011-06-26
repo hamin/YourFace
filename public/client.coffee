@@ -98,7 +98,7 @@ shoot = (position, isOpp) ->
          hitName = "myHits#{myHits}"
          $(".me").append "<div id='#{hitName}' class='myHit'></div>"
          $("##{hitName}").offset left: (myHits%3) * 30 + 20, top: (Math.floor myHits/3) * 30 + 20
-         ++oppHits;
+         ++myHits;
        
        console.log $("##{hitName}").offset()
        
