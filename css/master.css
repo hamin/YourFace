@@ -4,7 +4,7 @@ body{ overflow: hidden;}
 	border-style: solid;
 	border-color: green;
 	border-width: 5px;
-	background-color: gray;
+  background-image:url("/assets/bg.png");
 	width: 700px;
 	height: 900px;
 	float:left;
