@@ -4,6 +4,8 @@ token = null
 opponentToken = null
 session = null
 clientId = -1
+bullets = []
+bulletNum = 0
 
 addHandler = (session,type,callback) ->
 	console.log "addHandler"
@@ -45,12 +47,16 @@ updateDivPosition = (divName,newPosition) ->
   $(".#{divName}").offset left: newPosition
 
 shoot = (position) ->
-	console.log "shoot bitch shoot!"
-	$("#playingField").append "<div class='bullet'></div>"
-	$(".bullet").offset left: position.x, top: position.y
+	++bulletNum
+	bullets.push bulletNum
+	bulletName = "b#{bulletNum}"
+	console.log "shoot bitch shoot! bulletName=#{bulletName} x: #{position.x} y: #{position.y}"
+	$("#playingField").append "<div id='#{bulletName}' class='bullet'></div>"
+	$("##{bulletName}").offset left: position.x, top: position.y
+	
 
-client = new Faye.Client "http://192.168.201.92:3000/faye"	      
-#client = new Faye.Client "http://localhost:3000/faye"
+#client = new Faye.Client "http://192.168.201.92:3000/faye"	      
+client = new Faye.Client "http://localhost:3000/faye"
 
 client.subscribe "/yourface", (message) ->
   if clientId < 0
@@ -84,6 +90,6 @@ $(document).ready () ->
       updateDivPosition "me", curLeftPos + offset
     if event.keyCode is 32
       console.log "about to shoot"
-      shoot x: curLeftPos, y: curTopPos
+      shoot x: curLeftPos+50, y: curTopPos-15
     
     client.publish "/opponentPos", {curLeftPos: $(".me").offset().left, oppClientId: clientId}

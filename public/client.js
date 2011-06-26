@@ -1,11 +1,13 @@
 (function() {
-  var addHandler, apiKey, client, clientId, connectOpenTok, opponentToken, session, sessionId, setupSession, shoot, subscribeToStreams, token, updateDivPosition;
+  var addHandler, apiKey, bulletNum, bullets, client, clientId, connectOpenTok, opponentToken, session, sessionId, setupSession, shoot, subscribeToStreams, token, updateDivPosition;
   sessionId = null;
   apiKey = null;
   token = null;
   opponentToken = null;
   session = null;
   clientId = -1;
+  bullets = [];
+  bulletNum = 0;
   addHandler = function(session, type, callback) {
     console.log("addHandler");
     return session.addEventListener(type, callback);
@@ -59,9 +61,13 @@
     });
   };
   shoot = function(position) {
-    console.log("shoot bitch shoot!");
-    $("#playingField").append("<div class='bullet'></div>");
-    return $(".bullet").offset({
+    var bulletName;
+    ++bulletNum;
+    bullets.push(bulletNum);
+    bulletName = "b" + bulletNum;
+    console.log("shoot bitch shoot! bulletName=" + bulletName + " x: " + position.x + " y: " + position.y);
+    $("#playingField").append("<div id='" + bulletName + "' class='bullet'></div>");
+    return $("#" + bulletName).offset({
       left: position.x,
       top: position.y
     });
@@ -99,8 +105,8 @@
       if (event.keyCode === 32) {
         console.log("about to shoot");
         shoot({
-          x: curLeftPos,
-          y: curTopPos
+          x: curLeftPos + 50,
+          y: curTopPos - 15
         });
       }
       return client.publish("/opponentPos", {
