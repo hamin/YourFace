@@ -1,5 +1,3 @@
-client = new Faye.Client "http://192.168.50.152:3000/faye"
-
 sessionId = null
 apiKey = null
 token = null
@@ -53,6 +51,7 @@ $(document).ready () ->
 	  # right
 	  if event.keyCode is 39 	
       		$(".me").offset left: Math.min 600, curLeftPos + offset
+	  # spacebar
 
 	    # when 38
 	    #   # top
@@ -61,8 +60,10 @@ $(document).ready () ->
 	    #   # bottom
 	    #   $(".me").offset top: (curTopPos + 10)
 	    #   
-	      
-client = new Faye.Client "http://localhost:3000/faye"
+
+client = new Faye.Client "http://192.168.50.152:3000/faye"	      
+#client = new Faye.Client "http://localhost:3000/faye"
+
 client.subscribe "/yourface", (message) ->
 	console.log "faye message -> #{JSON.stringify message}"
 	sessionId = message.sessionId
