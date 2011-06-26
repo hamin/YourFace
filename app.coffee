@@ -37,12 +37,14 @@ ot.createSession "localhost", {}, (session) ->
 
 bayeux = new faye.NodeAdapter( mount: '/faye', timeout: 45)
 
+currentCliendId = 0
 
 registerPlayer = {
   incoming: (message, callback) ->
     if message.subscription == '/yourface'
       userToken = ot.generateToken({sessionId:globalSession.sessionId})
-      bayeux.getClient().publish '/yourface', {sessionId: globalSession.sessionId, apiKey: openTokConfig.apiKey, token: userToken }
+      currentCliendId += 1
+      bayeux.getClient().publish '/yourface', {sessionId: globalSession.sessionId, apiKey: openTokConfig.apiKey, token: userToken, clientId: currentCliendId }
     return callback message
 }
 
@@ -57,7 +59,7 @@ server.listen 3000
 http.createServer((request, response) ->
   console.log "request starting..."
   filePath = "." + request.url
-  filePath = "./index.html"  if filePath == "./"
+  filePath = "index.html"  if filePath == "./"
   extname = path.extname(filePath)
   contentType = "text/html"
   switch extname

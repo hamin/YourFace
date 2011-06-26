@@ -1,7 +1,9 @@
 sessionId = null
 apiKey = null
 token = null
+opponentToken = null
 session = null
+clientId = -1
 
 addHandler = (session,type,callback) ->
 	console.log "addHandler"
@@ -34,41 +36,43 @@ connectOpenTok = () ->
 	
 	console.log "apiKey = #{apiKey} token = #{token}"
 	session.connect(apiKey,token)
+	
+updateDivPosition = (divName,newPosition) -> 
+  newPosition = Math.max 13, newPosition
+  newPosition = Math.min 600, newPosition
+  
+  console.log "newPosition = #{newPosition}"
+  $(".#{divName}").offset left: newPosition
+
+client = new Faye.Client "http://192.168.201.92:3000/faye"	      
+#client = new Faye.Client "http://localhost:3000/faye"
+
+client.subscribe "/yourface", (message) ->
+  if clientId < 0
+  	sessionId = message.sessionId
+  	apiKey = message.apiKey
+  	token = message.token
+  	clientId = message.clientId
+  	connectOpenTok()
 
 # creating player divs
 $(document).ready () ->
 	$("#playingField").append "<div class='opponent'><div id='opponent'></div></div>"
 	$("#playingField").append "<div class='me'><div id='me'></div></div>"
 	
+	client.subscribe "/opponentPos", (message) ->
+    if message.oppClientId isnt clientId
+      updateDivPosition "opponent", message.curLeftPos
+  # Arrow Button Bindings
 	$('body').keydown (event) ->
 	  curLeftPos = $(".me").offset().left
-	  curTopPos = $(".me").offset().left
-	  
+
 	  offset = 50;
 	  #left
 	  if event.keyCode is 37
-	  		$(".me").offset left: Math.max 13, curLeftPos - offset
+	    updateDivPosition "me", curLeftPos - offset
 	  # right
 	  if event.keyCode is 39 	
-      		$(".me").offset left: Math.min 600, curLeftPos + offset
-	  # spacebar
-	  #if event.keyCode is 32
-	  		
-	    # when 38
-	    #   # top
-	    #   $(".me").offset top: (curTopPos - 10)
-	    # when 40
-	    #   # bottom
-	    #   $(".me").offset top: (curTopPos + 10)
-	    #   
-
-client = new Faye.Client "http://192.168.50.152:3000/faye"	      
-#client = new Faye.Client "http://localhost:3000/faye"
-
-client.subscribe "/yourface", (message) ->
-	console.log "faye message -> #{JSON.stringify message}"
-	sessionId = message.sessionId
-	apiKey = message.apiKey
-	token = message.token
-	connectOpenTok()
-
+      updateDivPosition "me", curLeftPos + offset
+    
+    client.publish "/opponentPos", {curLeftPos: $(".me").offset().left, oppClientId: clientId}
