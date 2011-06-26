@@ -54,7 +54,9 @@ shoot = (position) ->
    $("#playingField").append "<div id='#{bulletName}' class='bullet'></div>"
    $("##{bulletName}").offset left: position.x, top: position.y
    $("##{bulletName}").animate {top: (position.y - 915) }, 400, () ->
-   $("##{bulletName}").remove() if $("##{bulletName}").offset().top is 8
+     i = bullets.indexOf bulletName
+     bullets.splice i
+     $("##{bulletName}").remove() if $("##{bulletName}").offset().top < 8
 
 #client = new Faye.Client "http://192.168.201.92:3000/faye"	      
 client = new Faye.Client "http://localhost:3000/faye"

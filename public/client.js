@@ -71,12 +71,16 @@
       left: position.x,
       top: position.y
     });
-    $("#" + bulletName).animate({
+    return $("#" + bulletName).animate({
       top: position.y - 915
-    }, 400, function() {});
-    if ($("#" + bulletName).offset().top === 8) {
-      return $("#" + bulletName).remove();
-    }
+    }, 400, function() {
+      var i;
+      i = bullets.indexOf(bulletName);
+      bullets.splice(i);
+      if ($("#" + bulletName).offset().top < 8) {
+        return $("#" + bulletName).remove();
+      }
+    });
   };
   client = new Faye.Client("http://localhost:3000/faye");
   client.subscribe("/yourface", function(message) {
