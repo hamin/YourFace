@@ -72,7 +72,7 @@
   };
   shoot = function(position, isOpp) {
     var bulletClass, bulletName, sign;
-    if (oppHits >= 9 || myHits >= 9) {
+    if (oppHits === 9 || myHits === 9) {
       return;
     }
     ++bulletNum;
