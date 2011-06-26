@@ -40,8 +40,25 @@ connectOpenTok = () ->
 # creating player divs
 $(document).ready () ->
 	$("#playingField").append "<div class='opponent'><div id='opponent'></div></div>"
-	$("#playingField").append "<div class='me'><div id='me'></div></div>"  	
+	$("#playingField").append "<div class='me'><div id='me'></div></div>"
 	
+	$('body').keydown (event) ->
+	  curLeftPos = $(".me").offset().left
+	  curTopPos = $(".me").offset().left
+	  switch event.keyCode
+	    when 37
+	      # left
+	      $(".me").offset left: (curLeftPos - 10)
+	    when 39
+	      # right
+	      $(".me").offset left: (curLeftPos + 10)
+	    when 38
+	      # top
+	      $(".me").offset top: (curTopPos - 10)
+	    when 40
+	      # bottom
+	      $(".me").offset top: (curTopPos + 10)
+        
 client = new Faye.Client "http://localhost:3000/faye"
 client.subscribe "/yourface", (message) ->
 	console.log "faye message -> #{JSON.stringify message}"

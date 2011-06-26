@@ -1,6 +1,6 @@
 (function() {
   var addHandler, apiKey, client, connectOpenTok, session, sessionId, setupSession, subscribeToStreams, token;
-  client = new Faye.Client("http://localhost:3000/faye");
+  client = new Faye.Client("http://192.168.50.152:3000/faye");
   sessionId = null;
   apiKey = null;
   token = null;
@@ -51,7 +51,30 @@
   };
   $(document).ready(function() {
     $("#playingField").append("<div class='opponent'><div id='opponent'></div></div>");
-    return $("#playingField").append("<div class='me'><div id='me'></div></div>");
+    $("#playingField").append("<div class='me'><div id='me'></div></div>");
+    return $('body').keydown(function(event) {
+      var curLeftPos, curTopPos;
+      curLeftPos = $(".me").offset().left;
+      curTopPos = $(".me").offset().left;
+      switch (event.keyCode) {
+        case 37:
+          return $(".me").offset({
+            left: curLeftPos - 10
+          });
+        case 39:
+          return $(".me").offset({
+            left: curLeftPos + 10
+          });
+        case 38:
+          return $(".me").offset({
+            top: curTopPos - 10
+          });
+        case 40:
+          return $(".me").offset({
+            top: curTopPos + 10
+          });
+      }
+    });
   });
   client = new Faye.Client("http://localhost:3000/faye");
   client.subscribe("/yourface", function(message) {
