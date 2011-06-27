@@ -108,8 +108,8 @@ shoot = (position, isOpp) ->
      if ( isOpp is true && $("##{bulletName}").offset().top > 800 ) or ( isOpp is false && $("##{bulletName}").offset().top < 8 )
        $("##{bulletName}").remove()
 
-client = new Faye.Client "http://192.168.201.92:3000/faye"        
-#client = new Faye.Client "http://localhost:3000/faye"
+#client = new Faye.Client "http://192.168.201.92:3000/faye"        
+client = new Faye.Client "http://localhost:3000/faye"
 
 client.subscribe "/yourface", (message) ->
   if clientId < 0

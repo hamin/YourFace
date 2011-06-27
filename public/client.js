@@ -153,7 +153,7 @@
       }
     });
   };
-  client = new Faye.Client("http://192.168.201.92:3000/faye");
+  client = new Faye.Client("http://localhost:3000/faye");
   client.subscribe("/yourface", function(message) {
     if (clientId < 0) {
       sessionId = message.sessionId;
