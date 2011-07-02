@@ -171,7 +171,7 @@
       }
     });
   };
-  client = new Faye.Client("http://localhost:3000/faye");
+  client = new Faye.Client("http://66.172.33.130:3000/faye");
   client.subscribe("/yourface", function(message) {
     if (clientId < 0) {
       sessionId = message.sessionId;
